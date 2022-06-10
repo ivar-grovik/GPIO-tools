@@ -1,4 +1,4 @@
-from smbus2 import smbus
+import smbus
 
 # I2C channel 1 is connected to the GPIO pins
 channel = 1
