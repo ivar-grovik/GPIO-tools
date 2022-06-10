@@ -25,7 +25,8 @@ cont = True
 
 
 #Read temperature
-for i in range(0,3):
+for i in range(0, 3):
+    print("hei")
     print(temp_address[i])
     print(bus.read_i2c_block_data(address,temp_address[i]))
 
