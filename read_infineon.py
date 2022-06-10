@@ -1,4 +1,4 @@
-import smbus2
+import smbus
 
 # I2C channel 1 is connected to the GPIO pins
 channel = 1
@@ -15,7 +15,7 @@ meas_config = 0x08
 
 
 # Initialize I2C (SMBus)
-bus = smbus2.SMBus(channel)
+bus = smbus.SMBus(channel)
 
 # Create a sawtooth wave 16 times
 cont = True
