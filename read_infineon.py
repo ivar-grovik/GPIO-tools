@@ -19,12 +19,23 @@ bus = smbus2.SMBus(channel)
 # Create a sawtooth wave 16 times
 cont = True
 
-test = bus.read_i2c_block_data(address,ID_address, 3)
-print(test)
+test = bus.read_byte_data(address,ID_address)
+print(hex(test))
 #Read temperature
-for i in range(0, 3):
-    print(temp_address[i])
-    print(bus.read_i2c_block_data(address,temp_address[i], 32))
-    print(bus.read_byte_data(address,temp_address[i]))
-    print("\n")
+#for i in range(0, 3):
+#    print(temp_address[i])
+#    print(bus.read_i2c_block_data(address,temp_address[i], 32))
+#    print(bus.read_byte_data(address,temp_address[i]))
+#    print("\n")
+
+#print(hex(bus.read_i2c_block_data(address,0x03, 3)))
+
+bus.write_byte_data(address, 0x08, 0x06)
+
+for i in range(0,3):
+    print(hex(bus.read_byte_data(address, temp_address[i])))
+
+print(hex(bus.read_byte_data(address, 0x08)))
+
+#bus.write_byte_data(address, 0x08, 0x02)
 
