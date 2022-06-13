@@ -20,10 +20,26 @@ bus = smbus2.SMBus(channel)
 # Init methods
 # bus.write_byte_data(address, 0x08, 0x02)
 bus.write_byte_data(address, 0x08, 0x06)
+temp_coefficients = [0x10, 0x12]
+for i in range(0, len(temp_coefficients)):
+    byte = bus.read_byte_data(address, temp_coefficients[i])
+    temp_coefficients[i] = ByteTools.bin2int([bin(byte)], 8)
+
+print(temp_coefficients)
 
 bits = ["", "", ""]
 for i in range(0, 3):
     bit = bus.read_byte_data(address, temp_address[i])
     bits[i] = bin(bit)
 
-print(ByteTools.bin2int(bits, 8))
+raw_temp = ByteTools.bin2int(bits, 8)
+
+scale_factor = 253952
+
+temp_raw = raw_temp/scale_factor
+
+print(temp_raw)
+
+temp_comp = temp_coefficients[0]*0.5 + temp_coefficients[1]*temp_raw
+
+print(temp_comp)
