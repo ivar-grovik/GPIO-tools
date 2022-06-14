@@ -39,7 +39,7 @@ class InfineonSensor(SensorClass):
         self.bus.write_byte_data(self.addresses["sm_address"], self.addresses["meas_config"], hex_state)
 
     def getID(self):
-        self.setState('temp_meas')
+        self.setState('cont_temp')
         sm_address = self.addresses["sm_address"]
         id_address = self.addresses["ID_address"]
         return hex(self.bus.read_byte_data(sm_address, id_address))
