@@ -36,6 +36,7 @@ class InfineonSensor(SensorClass):
     def setState(self, state):
         validation.mustBeMember(state, self.states.keys())
         hex_state = hex(self.states[state])
+        print(hex_state)
         self.bus.write_byte_data(self.addresses["sm_address"], self.addresses["meas_config"], hex_state)
 
     def getID(self):
