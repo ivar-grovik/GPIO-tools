@@ -36,7 +36,7 @@ for i in range(0, 3):
     bits[i] = bin(bit)
 
 raw_temp = ByteTools.bin2int(bits, 8)
-
+print(raw_temp)
 scale_factor = 253952
 
 temp_raw = raw_temp/scale_factor
