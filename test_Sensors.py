@@ -10,8 +10,11 @@ class InfineonTests(unittest.TestCase):
 
     def test_ReadID(self):
         id = self.obj.getID()
-        self.assertEqual(id, 16)  # add assertion here
+        self.assertEqual(id, hex(0x10))  # add assertion here
 
+    #def test_initializes(self):
+        #self.obj.init
+        #self.obj.
 
 
 

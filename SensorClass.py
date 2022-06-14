@@ -8,11 +8,12 @@ import validation
 
 
 class SensorClass(ABC):
-    def __init__(self, identifier, addresses, scale_factors, bus):
+    def __init__(self, identifier, addresses, states, scale_factors, bus):
         self.identifier = identifier
         self.addresses = addresses
         self.scale_factors = scale_factors
         self.bus = bus
+        self.states = states
 
     @property
     @abstractmethod
@@ -32,11 +33,13 @@ class InfineonSensor(SensorClass):
     def read(self):
         print(self.identifier)
 
-    def initRead(self):
-        self.bus.write_byte_data(self.addresses["sm_address"], self.addresses["meas_config"], 0x06)
+    def setState(self, state):
+        validation.mustBeMember(state, self.states.keys())
+        hex_state = hex(self.states[state])
+        self.bus.write_byte_data(self.addresses["sm_address"], self.addresses["meas_config"], hex_state)
 
     def getID(self):
-        self.initRead()
+        self.setState('temp_meas')
         sm_address = self.addresses["sm_address"]
         id_address = self.addresses["ID_address"]
         return hex(self.bus.read_byte_data(sm_address, id_address))
@@ -73,6 +76,14 @@ class InfineonSensor(SensorClass):
             "temp_coefficients": [0x10, 0x12],  # c0, c1
             "press_coefficients": [0x13, 0x16, 0x1c, 0x20, 0x18, 0x1a, 0x1e]  # c00, c10, c20, c30, c01, c11, c21
         }
+        states = {
+            "stand-by": 0x00,
+            "press_meas": 0x01,
+            "temp_meas": 0x02,
+            "cont_press": 0x05,
+            "cont_temp": 0x06,
+            "cont_both": 0x07
+        }
         scale_factors = {
             1: 524288,
             2: 1572864,
@@ -84,4 +95,4 @@ class InfineonSensor(SensorClass):
             128: 2088960
         }
         bus = smbus2.SMBus(addresses["channel"])
-        super().__init__("Infineon", addresses, scale_factors, bus)
+        super().__init__("Infineon", addresses, states, scale_factors, bus)
