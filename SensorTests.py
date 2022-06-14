@@ -1,5 +1,6 @@
 import unittest
-
+import sys
+sys.path.insert(1, '/home/ivar/Repos/Sensor project/')
 import SensorClass
 
 
@@ -14,4 +15,5 @@ class InfineonTests(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    print("hei")
     unittest.main()
