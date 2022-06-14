@@ -45,7 +45,7 @@ class InfineonSensor(SensorClass):
         return hex(self.bus.read_byte_data(sm_address, id_address))
 
     def getTRaw(self):
-        addresses = self.temp_address
+        addresses = self.addresses["temp_address"]
         bits = ["", "", ""]
         for i in range(0, 3):
             bit = self.bus.read_byte_data(self.addresses["sm_address"], addresses[i])
