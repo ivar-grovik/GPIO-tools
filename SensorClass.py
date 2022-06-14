@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
+sys.path.insert(1, '/home/ivar/Repos/Sensor project/')
 import smbus2
 import ByteTools
+import validation
 
 
 class SensorClass(ABC):
@@ -41,6 +43,13 @@ class InfineonSensor(SensorClass):
         raw_temp = ByteTools.bin2int(bits, 8)
 
         return raw_temp
+    def getCoef(self, type_coef):
+        validation.mustBeMember(type_coef, ["pressure", "temp"])
+        if type_coef == "pressure":
+            coef = self.addresses["press_coefficients"]
+        elif type_coef == "temp":
+            coef = self.addresses["temp_coefficients"]
+        return coef
 
     def __init__(self):
         addresses = {
@@ -52,7 +61,8 @@ class InfineonSensor(SensorClass):
             "meas_config": 0x08,
             "press_config": 0x06,
             "temp_config": 0x07,
-            "temp_coefficients": [0x10, 0x12]  # c0, c1
+            "temp_coefficients": [0x10, 0x12], # c0, c1
+            "press_coefficients": [0x13, 0x16, 0x1c, 0x20, 0x18, 0x1a, 0x1e] # c00, c10, c20, c30, c01, c11, c21
         }
         scale_factors = {
             1: 524288,
