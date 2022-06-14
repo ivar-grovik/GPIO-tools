@@ -23,6 +23,7 @@ bus = smbus2.SMBus(channel)
 # bus.write_byte_data(address, 0x08, 0x02)
 bus.write_byte_data(address, 0x08, 0x06)
 temp_coefficients = [0x10, 0x12]
+
 for i in range(0, len(temp_coefficients)):
     byte = bus.read_byte_data(address, temp_coefficients[i])
     temp_coefficients[i] = ByteTools.bin2int([bin(byte)], 8)
