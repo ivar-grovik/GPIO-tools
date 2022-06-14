@@ -39,7 +39,7 @@ class InfineonSensor(SensorClass):
         self.initRead()
         sm_address = self.addresses["sm_address"]
         id_address = self.addresses["ID_address"]
-        return self.bus.read_byte(sm_address, id_address)
+        return hex(self.bus.read_byte(sm_address, id_address))
 
     def getTRaw(self):
         addresses = self.temp_address
