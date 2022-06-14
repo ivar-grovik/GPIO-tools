@@ -21,7 +21,7 @@ class SensorClass(ABC):
         pass
 
     @abstractmethod
-    def initRead(self):
+    def setState(self):
         pass
 
     def getAddress(self, address_type):
