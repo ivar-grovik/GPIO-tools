@@ -1,3 +1,6 @@
+import validation
+
+
 def bin2int(bin_list, byte_size):
     combined = ""
     for number in bin_list:
@@ -8,3 +11,19 @@ def bin2int(bin_list, byte_size):
         combined += number
 
     return int(combined, 2)
+
+def combineBytes(byte_list, byte_size):
+    validation.mustBeType(byte_list, "str")
+
+    thresholds = []
+    for i in range(1, len(byte_list)):
+        thresholds.append(i * byte_size)
+
+    if len(byte_list) == 2:
+        combined = (byte_list[1] << thresholds[0]) | byte_list[0]
+    elif len(byte_list) == 3:
+        combined = (byte_list[2] << thresholds[1]) | (byte_list[1] << thresholds[0]) | (byte_list[0])
+
+    print(hex(combined))
+
+    print(combined)
