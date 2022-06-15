@@ -33,7 +33,7 @@ print(temp_coefficients)
 bits = ["", "", ""]
 for i in range(0, 3):
     bit = bus.read_byte_data(address, temp_address[i])
-    bits[i] = bin(bit)
+    bits[i] = bit
 
 raw_temp = ByteTools.combineBytes(bits, 8)
 print(raw_temp)
