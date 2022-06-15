@@ -37,7 +37,7 @@ for i in range(0, 3):
 
 raw_temp = ByteTools.combineBytes(bits, 8)
 print(raw_temp)
-raw_temp = int(raw_temp)
+raw_temp = int(raw_temp,2)
 print(raw_temp)
 scale_factor = 253952
 
