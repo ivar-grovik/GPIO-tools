@@ -1,5 +1,6 @@
 import unittest
 import sys
+
 sys.path.insert(1, '/home/ivar/Repos/Sensor project/')
 import SensorClass
 import ByteTools
@@ -19,13 +20,24 @@ class InfineonTests(unittest.TestCase):
 
         self.assertEqual(actual, expected)
 
-        actual = ByteTools.str2int('0x101')
+        actual = ByteTools.str2int('0x05')
 
         self.assertEqual(actual, expected)
 
-    #def test_initializes(self):
-        #self.obj.init
-        #self.obj.
+    def test_listConvertion(self):
+        expected = [1, 5, 11]
+        actual = ByteTools.str2int(['0b1', '0b101', '0b1011'])
+
+        self.assertEqual(actual, expected)
+
+        actual = ByteTools.str2int(['0x01', '0x05', '0x0b'])
+
+        self.assertEqual(actual, expected)
+    # def test_initializes(self):
+    # self.obj.init
+    # self.obj.
+
+
 """
     def test_ConvertBytes(self):
         expected = 0x10203
@@ -45,8 +57,6 @@ class InfineonTests(unittest.TestCase):
 
             self.assertEqual(expected, value)
 """
-
-
 
 if __name__ == '__main__':
     unittest.main()
