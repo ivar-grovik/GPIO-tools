@@ -35,17 +35,17 @@ def str2int(values):
     if isinstance(values, list):
         converted = []
         for value in values:
-            if 'b' in value:
+            if '0b' in value:
                 base = 2
-            elif 'x' in value:
+            elif '0x' in value:
                 base = 0
             else:
                 raise ValueError(value)
             converted.append(int(value, base))
     else:
-        if 'b' in values:
+        if '0b' in values:
             base = 2
-        elif 'x' in values:
+        elif '0x' in values:
             base = 0
         else:
             raise ValueError(values)
