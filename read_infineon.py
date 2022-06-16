@@ -28,7 +28,6 @@ for i in range(0, len(temp_coefficients)):
     byte = bus.read_byte_data(address, temp_coefficients[i])
     temp_coefficients[i] = ByteTools.bin2int([bin(byte)], 8)
 
-print(temp_coefficients)
 
 bits = ["", "", ""]
 for i in range(0, 3):
@@ -36,8 +35,8 @@ for i in range(0, 3):
     bits[i] = bit
 
 raw_temp = ByteTools.combineBytes(bits, 8)
-print(raw_temp)
-raw_temp = int(raw_temp,2)
+
+raw_temp = int(raw_temp, 2)
 print(raw_temp)
 scale_factor = 253952
 

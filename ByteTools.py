@@ -16,7 +16,6 @@ def bin2int(bin_list, byte_size):
 
 def combineBytes(byte_list, byte_size):
     validation.mustBeType(byte_list, "str")
-
     thresholds = []
     for i in range(1, len(byte_list)):
         thresholds.append(i * byte_size)
