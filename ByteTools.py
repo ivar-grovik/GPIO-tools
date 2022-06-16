@@ -26,4 +26,4 @@ def combineBytes(byte_list, byte_size):
         combined = (byte_list[2] << thresholds[1]) | (byte_list[1] << thresholds[0]) | (byte_list[0])
 
 
-    return bin(combined)
+    return combined

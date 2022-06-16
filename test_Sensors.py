@@ -8,6 +8,7 @@ import ByteTools
 class InfineonTests(unittest.TestCase):
     def setUp(self):
         self.obj = SensorClass.InfineonSensor()
+        self.bytes = [[0x03, 0x02, 0x01], ['0b11', '0x10', '0x01'], [3, 2, 1]]
 
     def test_ReadID(self):
         id = self.obj.getID()
@@ -19,8 +20,8 @@ class InfineonTests(unittest.TestCase):
 
     def test_ConvertBytes(self):
         expected = 0x10203
-
-        value = ByteTools.combineBytes([0x03, 0x02, 0x01], 8)
+        values = self.bytes
+        value = ByteTools.combineBytes(self.bytes, 8)
 
         value = int(value, 2)
 
@@ -31,5 +32,3 @@ class InfineonTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-InfineonTests.run()

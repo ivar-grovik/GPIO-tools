@@ -12,3 +12,4 @@ sensor = InfineonSensor()
 t_raw = sensor.getTRaw()
 
 print(t_raw)
+print(int(t_raw, 2))
