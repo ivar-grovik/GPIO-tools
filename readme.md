@@ -1,0 +1,1 @@
+Project incorporating raspberry pi, smbus2 and GPIO based sensors
