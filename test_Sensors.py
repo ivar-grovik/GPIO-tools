@@ -21,6 +21,7 @@ class InfineonTests(unittest.TestCase):
         expected = 0x10203
         value_array = [[0x03, 0x02, 0x01], ['0b11', '0x10', '0x01'], [3, 2, 1]]
         for values in value_array:
+            print(values)
             value = ByteTools.combineBytes(values, 8)
 
             value = int(value, 2)
