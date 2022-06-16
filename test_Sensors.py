@@ -19,7 +19,7 @@ class InfineonTests(unittest.TestCase):
 
     def test_ConvertBytes(self):
         expected = 0x10203
-        value_array = [[0x03, 0x02, 0x01], ['0b11', '0x10', '0x01'], [3, 2, 1]]
+        value_array = [['0x03', '0x02', '0x01'], ['0b11', '0x10', '0x01'], [3, 2, 1]]
         for i in range(0, len(value_array)):
             print(value_array[i])
             value = ByteTools.combineBytes(value_array[i], 8)
