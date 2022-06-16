@@ -37,6 +37,8 @@ def str2int(values):
             base = 2
         elif 'x' in value:
             base = 0
+        else:
+            raise ValueError
         converted.append(int(value, base))
 
     return converted
