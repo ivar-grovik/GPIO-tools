@@ -32,13 +32,22 @@ def combineBytes(byte_list, byte_size):
 
 def str2int(values):
     converted = []
-    for value in values:
-        if 'b' in value:
+    if type(values) == 'list':
+        for value in values:
+            if 'b' in value:
+                base = 2
+            elif 'x' in value:
+                base = 0
+            else:
+                raise ValueError(value)
+            converted.append(int(value, base))
+    else:
+        if 'b' in values:
             base = 2
-        elif 'x' in value:
+        elif 'x' in values:
             base = 0
         else:
-            raise ValueError(value)
-        converted.append(int(value, base))
+            raise ValueError(values)
+        converted.append(int(values, base))
 
     return converted
