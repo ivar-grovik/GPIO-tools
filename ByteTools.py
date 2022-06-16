@@ -48,6 +48,6 @@ def str2int(values):
             base = 0
         else:
             raise ValueError(values)
-        converted.append(int(values, base))
+        converted = int(values, base)
 
     return converted
