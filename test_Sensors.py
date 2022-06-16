@@ -26,7 +26,7 @@ class InfineonTests(unittest.TestCase):
     #def test_initializes(self):
         #self.obj.init
         #self.obj.
-
+"""
     def test_ConvertBytes(self):
         expected = 0x10203
         value_array = [['0x03', '0x02', '0x01'], ['0b11', '0x10', '0x01'], [3, 2, 1]]
@@ -44,7 +44,7 @@ class InfineonTests(unittest.TestCase):
             value = int(value, 2)
 
             self.assertEqual(expected, value)
-
+"""
 
 
 
