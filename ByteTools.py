@@ -1,4 +1,5 @@
 import sys
+
 sys.path.insert(1, '/home/ivar/Repos/Sensor project/')
 import validation
 
@@ -14,6 +15,7 @@ def bin2int(bin_list, byte_size):
 
     return int(combined, 2)
 
+
 def combineBytes(byte_list, byte_size):
     validation.mustBeType(byte_list, "str")
     thresholds = []
@@ -25,5 +27,14 @@ def combineBytes(byte_list, byte_size):
     elif len(byte_list) == 3:
         combined = (byte_list[2] << thresholds[1]) | (byte_list[1] << thresholds[0]) | (byte_list[0])
 
-
     return combined
+
+
+def str2int(values):
+    converted = []
+    for value in values:
+        if 'b' in value:
+            base = 2
+        elif 'x' in value:
+            base = 0
+        converted.append(int(value, base))
