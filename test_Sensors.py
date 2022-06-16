@@ -21,6 +21,7 @@ class InfineonTests(unittest.TestCase):
     def test_ConvertBytes(self):
         expected = 0x10203
         values = self.bytes
+        print(values)
         value = ByteTools.combineBytes(self.bytes, 8)
 
         value = int(value, 2)
