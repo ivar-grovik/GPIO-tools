@@ -49,9 +49,9 @@ class InfineonSensor(SensorClass):
         bits = ["", "", ""]
         for i in range(0, 3):
             bit = self.bus.read_byte_data(self.addresses["sm_address"], addresses[i])
-            bits[i] = bin(bit)
+            bits[i] = bit
 
-        raw_temp = ByteTools.bin2int(bits, 8)
+        raw_temp = ByteTools.combineBytes(bits, 8)
 
         return raw_temp
 
