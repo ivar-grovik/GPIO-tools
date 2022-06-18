@@ -1,10 +1,6 @@
 from abc import ABC, abstractmethod
-import sys
 
-sys.path.insert(1, '/home/ivar/Repos/Sensor project/')
-import smbus2
-import ByteTools
-import validation
+
 
 
 class SensorClassAbstract(ABC):
