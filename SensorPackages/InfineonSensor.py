@@ -3,32 +3,61 @@ import smbus2
 import ByteTools
 import validation
 
+
 class InfineonSensor(SensorClassAbstract):
     @property
     def read(self):
         print(self.identifier)
 
-    def setState(self, state):
-        validation.mustBeMember(state, self.states.keys())
-        hex_state = self.states[state]
-        self.bus.write_byte_data(self.addresses["sm_address"], self.addresses["meas_config"], hex_state)
-
     def getID(self):
-        self.setState('cont_temp')
-        sm_address = self.addresses["sm_address"]
-        id_address = self.addresses["ID_address"]
+        sm_address = self.getAddress("sm_address")
+        id_address = self.getAddress("ID_address")
         return hex(self.bus.read_byte_data(sm_address, id_address))
 
-    def getTRaw(self):
-        addresses = self.addresses["temp_address"]
-        bits = ["", "", ""]
-        for i in range(0, 3):
-            bit = self.bus.read_byte_data(self.addresses["sm_address"], addresses[i])
-            bits[i] = bit
+    def setState(self, state):
+        validation.mustBeMember(state, self.states.keys())
+        state = self.states[state]
 
-        raw_temp = ByteTools.combineBytes(bits, 8)
+        sm_address = self.getAddress("sm_address")
+        self.bus.write_byte_data(sm_address, self.addresses["meas_config"], state)
 
-        return raw_temp
+    def readAddress(self, addresses):
+
+        sm_address = self.getAddress('sm_address')
+        if isinstance(addresses, list):
+            byte = []
+            for address in addresses:
+                byte.append(self.bus.read_byte_data(sm_address, address))
+        else:
+            byte = self.bus.read_byte_data(sm_address, addresses)
+        return byte
+
+    def getAddress(self, address_name):
+        validation.mustBeMember(address_name, self.addresses.keys())
+        return self.addresses[address_name]
+
+    def setTempSampling(self, num_samples):
+        validation.mustBeMember(num_samples, self.scale_factors.keys())
+
+        self.current_scale_factor = self.scale_factors[num_samples]
+
+    def setTempConfig(self, sensor, meas_rate, precision):
+        sensor_config = {
+            "internal": 0,
+            "external": 1
+        }
+
+        validation.mustBeMember(sensor, sensor_config.keys())
+        validation.mustBeMember(meas_rate, self.meas_rates.keys())
+        validation.mustBeMember(precision, self.precisions.keys())
+
+        self.current_meas_rate = self.meas_rates[meas_rate]
+        self.current_precision = self.precisions[precision]
+
+        self.setTempSampling(precision)
+
+    def getScaleFactor(self):
+        return self.current_scale_factor
 
     def getCoef(self, type_coef):
         validation.mustBeMember(type_coef, ["pressure", "temp"])
@@ -37,6 +66,34 @@ class InfineonSensor(SensorClassAbstract):
         elif type_coef == "temp":
             coef = self.addresses["temp_coefficients"]
         return coef
+
+    #Temperature
+    def getTRaw(self):
+        addresses = self.getAddress("temp_address")
+        bits = self.readAddress(addresses)
+
+        raw_temp = ByteTools.combineBytes(bits, 8)
+
+        return raw_temp
+
+    def getTempScaled(self):
+        scale_factor = self.getScaleFactor()
+
+        t_raw = int(self.getTRaw(), 2)
+
+        temp_scaled = t_raw / scale_factor
+
+        return temp_scaled
+
+    def getCompensatedTemp(self):
+        coeff_address = self.getAddress('temp_coefficients')
+        coeffs = self.readAddress(coeff_address)
+
+        temp_scaled = self.getTempScaled()
+
+        return coeffs[0] * 0.5 + coeffs[1] * temp_scaled
+
+
 
     def __init__(self):
         addresses = {
@@ -52,13 +109,14 @@ class InfineonSensor(SensorClassAbstract):
             "press_coefficients": [0x13, 0x16, 0x1c, 0x20, 0x18, 0x1a, 0x1e]  # c00, c10, c20, c30, c01, c11, c21
         }
         states = {
-            "stand-by": 0x00,
-            "press_meas": 0x01,
-            "temp_meas": 0x02,
-            "cont_press": 0x05,
-            "cont_temp": 0x06,
-            "cont_both": 0x07
+            "stand-by": 0b000,
+            "press_meas": 0b001,
+            "temp_meas": 0b010,
+            "cont_press": 0b101,
+            "cont_temp": 0b110,
+            "cont_both": 0b111
         }
+
         scale_factors = {
             1: 524288,
             2: 1572864,
@@ -71,3 +129,25 @@ class InfineonSensor(SensorClassAbstract):
         }
         bus = smbus2.SMBus(addresses["channel"])
         super().__init__("Infineon", addresses, states, scale_factors, bus)
+        self.setState('stand-by')
+        self.setTempSampling(1)
+        self.meas_rates = {
+            "1": 0b000,
+            "2": 0b001,
+            "4": 0b010,
+            "8": 0b011,
+            "16": 0b100,
+            "32": 0b101,
+            "64": 0b110,
+            "128": 0b111
+        }
+        self.precisions = {
+            "1": 0b0000,
+            "2": 0b0001,
+            "4": 0b0010,
+            "8": 0b0011,
+            "16": 0b100,
+            "32": 0b0101,
+            "64": 0b110,
+            "128": 0b0111
+        }

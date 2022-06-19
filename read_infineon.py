@@ -28,10 +28,11 @@ for i in range(0, 3):
     bit = bus.read_byte_data(address, temp_address[i])
     bits[i] = bit
 
+
 raw_temp = ByteTools.combineBytes(bits, 8)
 
 raw_temp = int(raw_temp, 2)
-print(raw_temp)
+
 scale_factor = 253952
 
 temp_raw = raw_temp/scale_factor

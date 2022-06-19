@@ -24,7 +24,7 @@ def combineBytes(byte_list, byte_size):
     elif len(byte_list) == 3:
         combined = (byte_list[2] << thresholds[1]) | (byte_list[1] << thresholds[0]) | (byte_list[0])
 
-    return combined
+    return bin(combined)
 
 
 def str2int(values):

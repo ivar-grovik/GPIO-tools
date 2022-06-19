@@ -7,6 +7,7 @@ class InfineonTests(unittest.TestCase):
     def setUp(self):
         self.obj = createObj("Infineon")
 
+    '''
     def test_ReadID(self):
         id = self.obj.getID()
         self.assertEqual(id, hex(0x10))
@@ -34,27 +35,65 @@ class InfineonTests(unittest.TestCase):
     # self.obj.init
     # self.obj.
 
+    def test_stand_by(self):
+        meas_config_address = self.obj.getAddress('meas_config')
+        #test standby
+        self.obj.setState('stand-by')
 
-"""
-    def test_ConvertBytes(self):
-        expected = 0x10203
-        value_array = [['0x03', '0x02', '0x01'], ['0b11', '0x10', '0x01'], [3, 2, 1]]
-        for i in range(0, len(value_array)):
-            values = value_array[i]
-            print(values)
-            print(values[0])
-            print(type(values[0]))
-            if type(values[0]) == 'str':
-                values = ByteTools.str2int(value_array[i])
-            print(values)
-            print('hei')
-            value = ByteTools.combineBytes(values, 8)
+        actual = bin(self.obj.readAddress(meas_config_address))
+        actual = int(actual[7:], 2)
+        self.assertEqual(actual, 0b000)
 
-            value = int(value, 2)
+    def test_temp_meas(self):
+        #test temp measurement
+        meas_config_address = self.obj.getAddress('meas_config')
+        self.obj.setState('temp_meas')
+        actual = bin(self.obj.readAddress(meas_config_address))
 
-            self.assertEqual(expected, value)
-"""
+        actual = int(actual[7:], 2)
+        self.assertEqual(actual, 0b010)
 
+    def test_press_meas(self):
+        # test temp measurement
+        meas_config_address = self.obj.getAddress('meas_config')
+        self.obj.setState('press_meas')
+        actual = bin(self.obj.readAddress(meas_config_address))
+        actual = int(actual[7:], 2)
+
+        self.assertEqual(actual, 0b001)
+        '''
+    def test_press_cont(self):
+        # test press measurement
+        meas_config_address = self.obj.getAddress('meas_config')
+        key = 'cont_press'
+        self.obj.setState(key)
+        actual = bin(self.obj.readAddress(meas_config_address))
+        print(actual)
+        print(actual[7:])
+        actual = int(actual[7:], 2)
+        print(actual)
+        expected = self.obj.states[key]
+        print(expected)
+        self.assertEqual(actual, expected)
+'''
+    def test_temp_cont(self):
+        # test temp measurement
+        meas_config_address = self.obj.getAddress('meas_config')
+        self.obj.setState('cont_temp')
+        actual = bin(self.obj.readAddress(meas_config_address))
+        actual = int(actual[7:], 2)
+
+        self.assertEqual(actual, 0b110)
+
+    def test_both_cont(self):
+        # test temp measurement
+        meas_config_address = self.obj.getAddress('meas_config')
+        self.obj.setState('cont_both')
+        actual = bin(self.obj.readAddress(meas_config_address))
+        actual = int(actual[7:], 2)
+
+        self.assertEqual(actual, 0b111)
+'''
 if __name__ == '__main__':
     unittest.main()
 
