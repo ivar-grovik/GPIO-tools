@@ -5,7 +5,7 @@ import sys
 sys.path.insert(1, '/home/ivar/Repos/Sensor project/')
 import validation
 import ByteTools
-from SensorClass import InfineonSensor
+from InfineonSensor import InfineonSensor
 
 sensor = InfineonSensor()
 

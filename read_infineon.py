@@ -1,10 +1,4 @@
 import smbus2
-import sys
-
-
-# I2C channel 1 is connected to the GPIO pins
-sys.path.insert(1, '/home/ivar/Repos/Sensor project/')
-import validation
 import ByteTools
 
 channel = 1

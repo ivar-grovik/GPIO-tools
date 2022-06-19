@@ -1,6 +1,3 @@
-import sys
-
-sys.path.insert(1, '/home/ivar/Repos/Sensor project/')
 import validation
 
 

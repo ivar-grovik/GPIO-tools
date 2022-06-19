@@ -1,14 +1,11 @@
 import unittest
-import sys
-
-sys.path.insert(1, '/home/ivar/Repos/Sensor project/')
-import SensorClass
+from InfineonSensor import InfineonSensor
 import ByteTools
 
 
 class InfineonTests(unittest.TestCase):
     def setUp(self):
-        self.obj = SensorClass.InfineonSensor()
+        self.obj = InfineonSensor()
 
     def test_ReadID(self):
         id = self.obj.getID()
@@ -60,3 +57,5 @@ class InfineonTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+InfineonTests()
