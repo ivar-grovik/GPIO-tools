@@ -1,4 +1,4 @@
-from SensorClass import SensorClassAbstract
+from SensorPackages.SensorClass import SensorClassAbstract
 import smbus2
 import ByteTools
 import validation

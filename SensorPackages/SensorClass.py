@@ -1,8 +1,5 @@
 from abc import ABC, abstractmethod
 
-
-
-
 class SensorClassAbstract(ABC):
     def __init__(self, identifier, addresses, states, scale_factors, bus):
         self.identifier = identifier

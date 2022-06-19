@@ -1,15 +1,15 @@
 import unittest
-from InfineonSensor import InfineonSensor
 import ByteTools
+from SensorPackages.SensorFactory import createObj
 
 
 class InfineonTests(unittest.TestCase):
     def setUp(self):
-        self.obj = InfineonSensor()
+        self.obj = createObj("Infineon")
 
     def test_ReadID(self):
         id = self.obj.getID()
-        self.assertEqual(id, hex(0x10))  # add assertion here
+        self.assertEqual(id, hex(0x10))
 
     def test_intConvertion(self):
         expected = 5
