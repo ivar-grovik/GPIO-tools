@@ -2,6 +2,7 @@ from SensorPackages.SensorClass import SensorClassAbstract
 import smbus2
 import ByteTools
 import validation
+import string
 
 
 class InfineonSensor(SensorClassAbstract):
@@ -14,12 +15,23 @@ class InfineonSensor(SensorClassAbstract):
         id_address = self.getAddress("ID_address")
         return hex(self.bus.read_byte_data(sm_address, id_address))
 
+    def reset(self):
+        sm_address = self.getAddress("sm_address")
+
     def setState(self, state):
         validation.mustBeMember(state, self.states.keys())
+        print(state)
         state = self.states[state]
+        state = f'{state:03b}'
 
         sm_address = self.getAddress("sm_address")
-        self.bus.write_byte_data(sm_address, self.addresses["meas_config"], state)
+        config_address = self.addresses["meas_config"]
+        old_value = bin(self.bus.read_byte_data(sm_address, config_address))
+        print(old_value)
+
+        old_value = old_value.replace(old_value[7:], state)
+
+        self.bus.write_byte_data(sm_address, config_address, int(old_value, 2))
 
     def readAddress(self, addresses):
 
@@ -67,7 +79,7 @@ class InfineonSensor(SensorClassAbstract):
             coef = self.addresses["temp_coefficients"]
         return coef
 
-    #Temperature
+    # Temperature
     def getTRaw(self):
         addresses = self.getAddress("temp_address")
         bits = self.readAddress(addresses)
@@ -92,8 +104,6 @@ class InfineonSensor(SensorClassAbstract):
         temp_scaled = self.getTempScaled()
 
         return coeffs[0] * 0.5 + coeffs[1] * temp_scaled
-
-
 
     def __init__(self):
         addresses = {

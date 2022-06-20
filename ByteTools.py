@@ -26,6 +26,18 @@ def combineBytes(byte_list, byte_size):
 
     return bin(combined)
 
+def changeBit(new_byte, old_byte):
+    if isinstance(new_byte, int):
+        new_byte = bin(new_byte)
+    if isinstance(old_byte, int):
+        old_byte = bin(old_byte)
+
+    if len(old_byte) != len(new_byte):
+        raise ValueError
+    
+    for i in range(0, len(new_byte)):
+        if new_byte[i] != old_byte[i]:
+            old_byte[i] = new_byte[i]
 
 def str2int(values):
 
