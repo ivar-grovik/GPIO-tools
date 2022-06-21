@@ -1,3 +1,4 @@
+import time
 import unittest
 import ByteTools
 from SensorPackages.SensorFactory import createObj
@@ -12,29 +13,35 @@ class InfineonTests(unittest.TestCase):
         id = self.obj.getID()
         self.assertEqual(id, hex(0x10))
 
-    def test_intConvertion(self):
-        expected = 5
-        actual = ByteTools.str2int('0b101')
+    def test_reset(self):
+        meas_config_address = self.obj.getAddress('meas_config')
+        self.obj.setState("temp_meas")
+
+        key = 'stand-by'
+
+        self.obj.reset()
+
+        actual = bin(self.obj.readAddress(meas_config_address))
+        actual = ByteTools.getBits(actual, [1, 2, 3])
+        print(actual)
+        expected = ByteTools.to3Bit(self.obj.states[key])
 
         self.assertEqual(actual, expected)
+    '''
+    def test_reset_2(self):
+        meas_config_address = self.obj.getAddress('meas_config')
+       % press_address = self.obj.getAddress("press_meas")
+        self.obj.setState("temp_meas")
 
-        actual = ByteTools.str2int('0x05')
+        key = 'stand-by'
+
+        actual = bin(self.obj.readAddress(meas_config_address))
+        actual = int(actual[7:], 2)
+
+        expected = ByteTools.to3Bit(self.obj.states[key])
 
         self.assertEqual(actual, expected)
-
-    def test_listConvertion(self):
-        expected = [1, 5, 11]
-        actual = ByteTools.str2int(['0b1', '0b101', '0b1011'])
-
-        self.assertEqual(actual, expected)
-
-        actual = ByteTools.str2int(['0x01', '0x05', '0x0b'])
-
-        self.assertEqual(actual, expected)
-    # def test_initializes(self):
-    # self.obj.init
-    # self.obj.
-
+    
     def test_stand_by(self):
         meas_config_address = self.obj.getAddress('meas_config')
         #test standby
@@ -43,12 +50,14 @@ class InfineonTests(unittest.TestCase):
         self.obj.setState(key)
 
         actual = bin(self.obj.readAddress(meas_config_address))
+        print(actual)
+        print(actual[7:])
         actual = int(actual[7:], 2)
 
-        expected = self.obj.states[key]
-
+        expected = ByteTools.to3Bit(self.obj.states[key])
+        print(expected)
         self.assertEqual(actual, expected)
-
+    
     def test_temp_meas(self):
         #test temp measurement
         meas_config_address = self.obj.getAddress('meas_config')
@@ -110,7 +119,7 @@ class InfineonTests(unittest.TestCase):
 
         expected = self.obj.states[key]
         self.assertEqual(actual, expected)
-
+    
     def test_both_cont(self):
         # test temp measurement
         meas_config_address = self.obj.getAddress('meas_config')
@@ -125,7 +134,7 @@ class InfineonTests(unittest.TestCase):
 
         expected = self.obj.states[key]
         self.assertEqual(actual, expected)
-
+    '''
 if __name__ == '__main__':
     unittest.main()
 

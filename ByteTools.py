@@ -26,21 +26,60 @@ def combineBytes(byte_list, byte_size):
 
     return bin(combined)
 
-def changeBit(new_byte, old_byte):
-    if isinstance(new_byte, int):
-        new_byte = bin(new_byte)
+
+def changeBit(old_byte, new_bits, bit_ind):
+    validation.mustBeSameLength(new_bits, bit_ind)
+    if isinstance(new_bits, int):
+        new_bits = bin(new_bits)
     if isinstance(old_byte, int):
         old_byte = bin(old_byte)
+    old_byte = old_byte[::-1]
+    for i in range(0, len(old_byte)):
+        for j in range(0, len(bit_ind)):
+            if bit_ind[j] == i:
+                old_byte = old_byte[:i-1] + str(new_bits[j]) + old_byte[i:]
 
-    if len(old_byte) != len(new_byte):
-        raise ValueError
-    
-    for i in range(0, len(new_byte)):
-        if new_byte[i] != old_byte[i]:
-            old_byte[i] = new_byte[i]
+    return old_byte[::-1]
+
+def bin2List(binary):
+    output = []
+    if isinstance(binary, int):
+        binary = bin(binary)
+    for i in range(2, len(binary)):
+        output.append(int((binary[i])))
+
+    return output
+
+    return temp
+
+def to8Bit(num):
+    if isinstance(num, str):
+        num = int(num, 2)
+    bit = f'{num:08b}'
+    bit = "0b"+bit
+    return bit
+
+def getBits(num, bit_ind):
+    output = "0b"
+    if isinstance(num, int):
+        num = bin(num)
+    num = num[::-1]
+    for i in range(0, len(num)-2):
+        for j in bit_ind:
+            if j == i:
+                output += num[i]
+
+    return output
+
+def to3Bit(num):
+    if isinstance(num, str):
+        num = int(num, 2)
+    bit = f'{num:03b}'
+    bit = "0b"+bit
+    return bit
+
 
 def str2int(values):
-
     if isinstance(values, list):
         converted = []
         for value in values:

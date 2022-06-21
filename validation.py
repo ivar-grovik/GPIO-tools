@@ -16,3 +16,7 @@ def mustBeType(value, obj_type):
 
     if bad_type:
         raise ValueError('Value(s)' + str(value) + ' must be of type ', str(obj_type))
+
+def mustBeSameLength(list_1, list_2):
+    if len(list_1) != len(list_2):
+        raise ValueError("Lists ", list_1, " and ", list_2, " must be same length")

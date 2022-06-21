@@ -1,3 +1,5 @@
+import time
+
 from SensorPackages.SensorClass import SensorClassAbstract
 import smbus2
 import ByteTools
@@ -16,22 +18,29 @@ class InfineonSensor(SensorClassAbstract):
         return hex(self.bus.read_byte_data(sm_address, id_address))
 
     def reset(self):
-        sm_address = self.getAddress("sm_address")
+        reset_address = self.getAddress("reset")
+        byte = 0b1001
+        self.writeAddress(reset_address, byte)
+        time.sleep(5)
+
 
     def setState(self, state):
         validation.mustBeMember(state, self.states.keys())
-        print(state)
-        state = self.states[state]
-        state = f'{state:03b}'
+        state = ByteTools.to3Bit(bin(self.states[state]))
 
         sm_address = self.getAddress("sm_address")
         config_address = self.addresses["meas_config"]
         old_value = bin(self.bus.read_byte_data(sm_address, config_address))
-        print(old_value)
 
-        old_value = old_value.replace(old_value[7:], state)
+        bits = ByteTools.bin2List(state)
+        old_value = ByteTools.changeBit(old_value, bits, [1, 2, 3])
 
         self.bus.write_byte_data(sm_address, config_address, int(old_value, 2))
+
+    def writeAddress(self, address, byte):
+        sm_address = self.getAddress('sm_address')
+        self.bus.write_byte_data(sm_address, address, byte)
+
 
     def readAddress(self, addresses):
 
@@ -116,7 +125,8 @@ class InfineonSensor(SensorClassAbstract):
             "press_config": 0x06,
             "temp_config": 0x07,
             "temp_coefficients": [0x10, 0x12],  # c0, c1
-            "press_coefficients": [0x13, 0x16, 0x1c, 0x20, 0x18, 0x1a, 0x1e]  # c00, c10, c20, c30, c01, c11, c21
+            "press_coefficients": [0x13, 0x16, 0x1c, 0x20, 0x18, 0x1a, 0x1e],  # c00, c10, c20, c30, c01, c11, c21
+            "reset": 0x0c
         }
         states = {
             "stand-by": 0b000,
