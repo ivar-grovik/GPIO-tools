@@ -23,6 +23,15 @@ class InfineonSensor(SensorClassAbstract):
         self.writeAddress(reset_address, byte)
         time.sleep(5)
 
+    def getState(self):
+        sm_address = self.getAddress("sm_address")
+        config_address = self.addresses["meas_config"]
+        state = bin(self.bus.read_byte_data(sm_address, config_address))
+
+        state = int(ByteTools.getBits(state, [1, 2, 3]), 2)
+        all_states = self.states
+
+        return list(all_states.keys())[list(all_states.values()).index(state)]
 
     def setState(self, state):
         validation.mustBeMember(state, self.states.keys())
@@ -33,14 +42,13 @@ class InfineonSensor(SensorClassAbstract):
         old_value = bin(self.bus.read_byte_data(sm_address, config_address))
 
         bits = ByteTools.bin2List(state)
-        old_value = ByteTools.changeBit(old_value, bits, [1, 2, 3])
+        old_value = ByteTools.changeBit(old_value, bits, [3, 2, 1])
 
         self.bus.write_byte_data(sm_address, config_address, int(old_value, 2))
 
     def writeAddress(self, address, byte):
         sm_address = self.getAddress('sm_address')
         self.bus.write_byte_data(sm_address, address, byte)
-
 
     def readAddress(self, addresses):
 
