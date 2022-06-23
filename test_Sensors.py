@@ -22,7 +22,7 @@ class InfineonTests(unittest.TestCase):
         self.obj.reset()
 
         actual = bin(self.obj.readAddress(meas_config_address))
-        actual = ByteTools.getBits(actual, [3, 2, 1])
+        actual = ByteTools.getBits(actual, [2, 1, 0])
 
         expected = ByteTools.to3Bit(self.obj.states[key])
 
@@ -36,7 +36,7 @@ class InfineonTests(unittest.TestCase):
         self.obj.setState(key)
 
         actual = bin(self.obj.readAddress(meas_config_address))
-        actual = ByteTools.getBits(actual, [3, 2, 1])
+        actual = ByteTools.getBits(actual, [2, 1, 0])
 
         expected = ByteTools.to3Bit(self.obj.states[key])
 
@@ -50,7 +50,7 @@ class InfineonTests(unittest.TestCase):
         self.obj.setState(key)
         print(self.obj.getState())
         actual = bin(self.obj.readAddress(meas_config_address))
-        actual = ByteTools.getBits(actual, [3, 2, 1])
+        actual = ByteTools.getBits(actual, [2, 1, 0])
 
         expected = ByteTools.to3Bit(self.obj.states[key])
 
@@ -63,19 +63,22 @@ class InfineonTests(unittest.TestCase):
         key = "press_meas"
         self.obj.setState(key)
         actual = bin(self.obj.readAddress(meas_config_address))
-        actual = ByteTools.getBits(actual, [3, 2, 1])
+        actual = ByteTools.getBits(actual, [2, 1, 0])
 
         expected = ByteTools.to3Bit(self.obj.states[key])
         self.assertEqual(actual, expected)
 
     def test_press_cont(self):
         # test press measurement
+        print(self.obj.getState())
         meas_config_address = self.obj.getAddress('meas_config')
 
         key = 'cont_press'
         self.obj.setState(key)
         actual = bin(self.obj.readAddress(meas_config_address))
-        actual = ByteTools.getBits(actual, [3, 2, 1])
+        actual = ByteTools.getBits(actual, [2, 1, 0])
+
+        print(self.obj.getState())
 
         expected = ByteTools.to3Bit(self.obj.states[key])
 
@@ -88,7 +91,7 @@ class InfineonTests(unittest.TestCase):
         key = 'cont_temp'
         self.obj.setState(key)
         actual = bin(self.obj.readAddress(meas_config_address))
-        actual = ByteTools.getBits(actual, [3, 2, 1])
+        actual = ByteTools.getBits(actual, [2, 1, 0])
 
         expected = ByteTools.to3Bit(self.obj.states[key])
         self.assertEqual(actual, expected)
@@ -100,7 +103,7 @@ class InfineonTests(unittest.TestCase):
         key = 'cont_both'
         self.obj.setState(key)
         actual = bin(self.obj.readAddress(meas_config_address))
-        actual = ByteTools.getBits(actual, [3, 2, 1])
+        actual = ByteTools.getBits(actual, [2, 1, 0])
 
         expected = ByteTools.to3Bit(self.obj.states[key])
         self.assertEqual(actual, expected)
@@ -108,4 +111,4 @@ class InfineonTests(unittest.TestCase):
 if __name__ == '__main__':
     unittest.main()
 
-InfineonTests()
+InfineonTests.test_temp_meas()

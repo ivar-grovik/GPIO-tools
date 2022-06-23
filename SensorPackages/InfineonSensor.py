@@ -28,7 +28,9 @@ class InfineonSensor(SensorClassAbstract):
         config_address = self.addresses["meas_config"]
         state = bin(self.bus.read_byte_data(sm_address, config_address))
 
-        state = int(ByteTools.getBits(state, [1, 2, 3]), 2)
+        state = ByteTools.getBits(state, [2, 1, 0])
+
+        state = int(state, 2)
         all_states = self.states
 
         return list(all_states.keys())[list(all_states.values()).index(state)]
@@ -42,7 +44,8 @@ class InfineonSensor(SensorClassAbstract):
         old_value = bin(self.bus.read_byte_data(sm_address, config_address))
 
         bits = ByteTools.bin2List(state)
-        old_value = ByteTools.changeBit(old_value, bits, [3, 2, 1])
+
+        old_value = ByteTools.changeBit(old_value, bits, [2, 1, 0])
 
         self.bus.write_byte_data(sm_address, config_address, int(old_value, 2))
 

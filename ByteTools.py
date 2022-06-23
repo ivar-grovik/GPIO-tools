@@ -37,7 +37,7 @@ def changeBit(old_byte, new_bits, bit_ind):
     for i in range(0, len(old_byte)):
         for j in range(0, len(bit_ind)):
             if bit_ind[j] == i:
-                old_byte = old_byte[:i-1] + str(new_bits[j]) + old_byte[i:]
+                old_byte = old_byte[:i] + str(new_bits[j]) + old_byte[i+1:]
 
     return old_byte[::-1]
 
@@ -60,7 +60,8 @@ def to8Bit(num):
     return bit
 
 def getBits(num, bit_ind):
-    output = "0b"
+    prefix = "0b"
+    output = ""
     if isinstance(num, int):
         num = bin(num)
     num = num[::-1]
@@ -68,8 +69,9 @@ def getBits(num, bit_ind):
         for j in bit_ind:
             if j == i:
                 output += num[i]
+    output = output[::-1]
 
-    return output
+    return prefix + output
 
 def to3Bit(num):
     if isinstance(num, str):
